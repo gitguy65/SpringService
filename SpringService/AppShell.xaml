@@ -4,12 +4,24 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SpringService"
+    xmlns:views="clr-namespace:SpringService.Views"
+    xmlns:boxIcon="clr-namespace:SpringService.Models.Utils"
     Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarIsVisible="True"
     Title="SpringService">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar>
+        <Tab Icon="bx_home">
+            <ShellContent ContentTemplate="{DataTemplate views:Home}" />
+        </Tab>
+        <Tab Icon="bx_book_alt">
+            <ShellContent ContentTemplate="{DataTemplate views:Bookings}" />
+        </Tab>
+        <Tab Icon="bx_history">
+            <ShellContent ContentTemplate="{DataTemplate views:History}" />
+        </Tab>
+        <Tab Icon="bx_user">
+            <ShellContent ContentTemplate="{DataTemplate views:Profile}" />
+        </Tab>
+    </TabBar>
 </Shell>

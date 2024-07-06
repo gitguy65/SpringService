@@ -1,0 +1,21 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpringService.Views.BookingDetail"
+             xmlns:viewmodel="clr-namespace:SpringService.ViewModels"
+             x:DataType="viewmodel:BookingDetailViewModel"
+             Title="Booking Info">
+    <ScrollView Padding="10">
+        <Frame CornerRadius="20" Background="Transparent">
+            <VerticalStackLayout Spacing="15">
+                <Label Text="{Binding Booking.BookingDate, StringFormat='Order date: {0}'}"/>
+                <Label Text="{Binding Booking.StartDate, StringFormat='Start date: {0}'}"/>
+                <Label Text="{Binding Booking.EndDate, StringFormat='Estimated End date: {0}'}"/>
+                <Label Text="{Binding Booking.Amount, StringFormat='Charge: {0}'}"/>
+                <Label Text="{Binding Booking.Message, StringFormat='Message: {0}'}"/>
+                <Label Text="{Binding Booking.Location, StringFormat='Location: {0}'}"/>
+                <Label Text="{Binding Booking.IsAccepted, StringFormat='Approved: {0}'}"/>
+                <Label Text="{Binding Booking.IsCompleted, StringFormat='Completed: {0}'}"/>
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
+</ContentPage>

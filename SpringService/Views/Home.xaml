@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:SpringService.Models"
+             x:DataType="viewmodel:HomeViewModel"
+             xmlns:viewmodel ="clr-namespace:SpringService.ViewModels"
+             x:Class="SpringService.Views.Home">
+    <ScrollView>
+        <StackLayout Orientation="Vertical" Padding="10" Spacing="30">
+
+            <Label FontSize="40" FontFamily="OpenSansSemibold" HorizontalTextAlignment="Center">Welcome!</Label>
+
+            <!--#Popular On Demand Service-->
+            <Grid RowDefinitions="auto, *" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <Label FontSize="15" Padding="0, 10">Popular On Demand</Label>
+                <CollectionView ItemsSource="{Binding Categories}" SelectionMode="None" Grid.Row="1">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="25" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Category"> 
+                            <Frame Padding="0" BackgroundColor="Transparent" WidthRequest="150">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}" 
+                                                          Command="{Binding Source={RelativeSource 
+                                                                    AncestorType={x:Type viewmodel:HomeViewModel}}, 
+                                                                    Path=CategoryDetailCommand}"/>
+                                </Frame.GestureRecognizers>
+                                <StackLayout Spacing="10">
+                                    <Image Aspect="AspectFill" Source="qauto"/>
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="{Binding Name}" HorizontalOptions="Center" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame> 
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                       IsRunning="{Binding IsBusy}" 
+                       HorizontalOptions="FillAndExpand" 
+                       VerticalOptions="CenterAndExpand" 
+                       Grid.RowSpan="2" Grid.ColumnSpan="2"/> 
+            </Grid>
+
+            <!--#CTA-->
+            <Border HeightRequest="210" Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="Navy" Offset="0"/>
+                        <GradientStop Color="Violet" Offset="0.9"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid> 
+                    <StackLayout Spacing="15" VerticalOptions="Center">
+                        <Label FontSize="30" FontAttributes="Bold" TextColor="White" Text="Place your request!"/>
+                        <Button Background="Orange" TextColor="White" Text="Book now" HeightRequest="40" 
+                                HorizontalOptions="Start" CommandParameter="{Binding .}" 
+                                Command="{Binding CreateBookingCommand}"/>
+                    </StackLayout>
+                </Grid>
+            </Border>
+            <!--#End CTA-->
+
+            <!--#Reviews-->
+            <StackLayout Spacing="5">
+                <Label FontSize="15">Our Reviews</Label>
+                <CarouselView IndicatorView="indicatorView">
+                    <CarouselView.ItemsSource>
+                        <x:Array Type="{x:Type model:Review}">
+                            <model:Review Message="Lorem ipsum dolor sit amet consectetur adipisicing elit." Star="4"/>
+                            <model:Review Message="Lorem ipsum dolor sit amet consectetur adipisicing elit." Star="3"/>
+                            <model:Review Message="Lorem ipsum dolor sit amet consectetur adipisicing elit." Star="5"/>
+                            <model:Review Message="Lorem ipsum dolor sit amet consectetur adipisicing elit." Star="5"/>
+                            <model:Review Message="Lorem ipsum dolor sit amet consectetur adipisicing elit." Star="5"/>
+                        </x:Array>
+                    </CarouselView.ItemsSource>
+                    <CarouselView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"
+                                           SnapPointsAlignment="Center" SnapPointsType="Mandatory"/>
+                    </CarouselView.ItemsLayout>
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Review">
+                            <Frame HasShadow="False" HeightRequest="200" CornerRadius="20" 
+                                   Background="Transparent" 
+                                   HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                                <Frame.Shadow>
+                                    <Shadow Brush="DarkGray" Offset="20,20" Radius="40" Opacity="0.8"/>
+                                </Frame.Shadow>
+                                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Label Text="{Binding Message}"
+                                           FontSize="18"
+                                           HorizontalTextAlignment="Center"/>
+                                    <HorizontalStackLayout HorizontalOptions="Center">
+                                        <Label Text="{Binding Star}" 
+                                               FontSize="18"/>
+                                        <Label Text="{Binding Star}" FontFamily="BoxIcon"
+                                               FontSize="18"/>
+                                    </HorizontalStackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+
+                </CarouselView>
+                <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center"/>
+            </StackLayout>
+            <!--#End Reviews-->
+            
+            <!--Spacer-->
+            <Border/>
+            <!--EndSpacer-->
+
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>

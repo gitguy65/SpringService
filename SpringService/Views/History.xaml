@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpringService.Views.History"
+             Title="History">
+    <ScrollView>
+        <CollectionView>
+            <CollectionView.EmptyView>
+                <StackLayout>
+                    <Image HorizontalOptions="CenterAndExpand" 
+                           VerticalOptions="CenterAndExpand" 
+                           Source="qauto"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </ScrollView>
+</ContentPage>
