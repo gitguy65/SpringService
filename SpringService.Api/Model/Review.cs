@@ -11,6 +11,7 @@ namespace SpringService.Api.Models
         public User ServiceUser { get; set; }
         public int ServiceProviderId { get; set; }
         public User ServiceProvider { get; set; }
+        public DateTime time { get; set; }
         public string Message { get; set; }
         public double Star { get; set; }
     }
