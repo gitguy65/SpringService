@@ -1,4 +1,6 @@
-﻿namespace SpringService.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SpringService.Api.Models
 {
     public class Transaction
     {
@@ -8,6 +10,7 @@
           `commission` decimal(28,8) NOT NULL, 
           `charge` decimal(10,0) NOT NULL, 
           `type` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,*/
+        [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
         public string ServiceId { get; set; }

@@ -12,7 +12,8 @@ namespace SpringService.Api.Model.Dto
         public double Amount { get; set; }
         public double Charge { get; set; }
         public string Message { get; set; }
-        public GeoHashLocation Location { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
         public bool IsAccepted { get; set; }
         public bool IsPaymentConfirmed { get; set; }
         public string PaymentType { get; set; }

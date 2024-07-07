@@ -1,7 +1,10 @@
-﻿namespace SpringService.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SpringService.Api.Models
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string UserName { get; set; }
@@ -19,7 +22,8 @@
         public bool IsVerified { get; set; }
         public string Password { get; set; }
         public string Social { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Review> GivenReviews { get; set; }
+        public ICollection<Review> ReceivedReviews { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<History> Histories { get; set; }
     }

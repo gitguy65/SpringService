@@ -1,8 +1,12 @@
-﻿namespace SpringService.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SpringService.Api.Models
 {
     public class Booking
     {
+        [Key]
         public int Id { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; } 
         public DateTime BookingDate { get; set; }
         public DateTime StartDate { get; set; }
@@ -10,7 +14,8 @@
         public double Amount { get; set; }
         public double Charge { get; set; }
         public string Message { get; set; }
-        public GeoHashLocation Location { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
         public bool IsAccepted { get; set; }
         public bool IsPaymentConfirmed { get; set; }
         public string PaymentType { get; set; }

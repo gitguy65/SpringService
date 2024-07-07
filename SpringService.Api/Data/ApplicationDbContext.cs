@@ -18,15 +18,29 @@ namespace SpringService.Api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Review>()
-                 .HasOne(q => q.UserId)
-                 .WithMany(f => f.Reviews)
-                 .HasForeignKey(q => q.UserId);
-
             modelBuilder.Entity<Booking>()
-                 .HasOne(q => q.UserId)
-                 .WithMany(f => f.Bookings)
-                 .HasForeignKey(q => q.UserId);
+                 .HasOne(u => u.User)
+                 .WithMany(b => b.Bookings)
+                 .HasForeignKey(u => u.UserId)
+                 .IsRequired();
+
+            modelBuilder.Entity<History>()
+                 .HasOne(u => u.User)
+                 .WithMany(h => h.Histories)
+                 .HasForeignKey(u => u.UserId)
+                 .IsRequired();
+
+            modelBuilder.Entity<Review>()
+                .HasOne(u => u.ServiceUser)
+                .WithMany(r => r.GivenReviews)
+                .HasForeignKey(r => r.ServiceUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(u => u.ServiceProvider)
+                .WithMany(r => r.ReceivedReviews)
+                .HasForeignKey(r => r.ServiceProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

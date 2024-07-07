@@ -5,7 +5,7 @@ namespace SpringService
     public class LocalDatabase
     {
         private const string DB_NAME = "spring_service.db3";
-        private readonly SQLiteAsyncConnection connection;
+        /*private readonly SQLiteAsyncConnection connection;
 
         public LocalDatabase(SQLLiteAsyncConnection connection)
         {
@@ -30,7 +30,7 @@ namespace SpringService
         public async Task DeleteUser(Db user)
         {
             await connection.RemoveAsync(user);
-        }
+        }*/
     }
 
 }
