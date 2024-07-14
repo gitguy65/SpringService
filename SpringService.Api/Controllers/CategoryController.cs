@@ -7,7 +7,7 @@ using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Controllers
 {
-    [Route("api/category")]
+    [Route("api/category/")]
     [ApiController]
     public class CategoryController(ICategoryRepository categoryRepository,
                                     ILogger<CategoryController> logger,
@@ -17,11 +17,12 @@ namespace SpringService.Api.Controllers
         private readonly ILogger<CategoryController> logger = logger;
         private readonly IMapper mapper = mapper;
 
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetCategorys()
+        public IActionResult GetCategories()
         {
             var Category = mapper.Map<List<CategoryDto>>(categoryRepository.FetchAll());
 
@@ -77,38 +78,39 @@ namespace SpringService.Api.Controllers
             if (!categoryRepository.CreateCategory(CategoryMap))
             {
                 ModelState.AddModelError("", "An internal error occured");
+                logger.LogInformation(message: ModelState.ToString());
                 return StatusCode(500, ModelState);
             }
 
             return Ok("succesfully created");
         }
 
+        
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DeleteCategoryPost([FromQuery] Category category)
+        public IActionResult DeleteCategoryPost(int id)
         {
-            if (category == null)
+            if (id <= 0)
                 return BadRequest();
 
-            if (!categoryRepository.CategoryExists(category.Id))
+            if (!categoryRepository.CategoryExists(id))
             {
                 return NotFound();
             }
 
-            var CategoryToDelete = categoryRepository.GetCategory(category.Id);
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!categoryRepository.DeleteCategory(CategoryToDelete))
+            if (!categoryRepository.DeleteCategory(id))
             {
                 ModelState.AddModelError("", "An error occured while deleting Category");
             }
 
             return NoContent();
         }
+        
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

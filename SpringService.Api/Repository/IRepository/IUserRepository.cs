@@ -4,7 +4,7 @@ namespace SpringService.Api.Repository.IRepository
 {
     public interface IUserRepository
     {
-        List<User> GetUsers();
+        IEnumerable<User> GetUsers();
         User GetUser(string slug);
         bool CreateUser(User user);
         bool UpdateUser(User user);

@@ -6,11 +6,11 @@
     <ScrollView>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="140" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="10" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
@@ -30,8 +30,8 @@
                 <Image Source="cauto"/>
             </Border>
 
-            <Grid Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" Padding="0, 30, 0, 0">
-                <StackLayout Spacing="15">
+            <Grid Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" Padding="0, 30, 0, 10">
+                <StackLayout Spacing="10">
                     <Frame BackgroundColor="Transparent">
                         <StackLayout Spacing="10">
                             <Label Text="Personal Details" FontSize="18"/>

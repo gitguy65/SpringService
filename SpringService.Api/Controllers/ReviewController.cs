@@ -7,21 +7,37 @@ namespace SpringService.Api.Controllers
     [ApiController]
     public class ReviewController : Controller
     {
-        [HttpGet("/popular")]
-        public IActionResult Get() {
-            return Ok("succesfully created");
+        [HttpGet("top-reviews")]
+        public IActionResult FetchPopular() {
+            throw new NotImplementedException();
         }
 
-        [HttpGet("/{userid}")]
-        public IActionResult Get(int userid)
+        [HttpGet("given-reviews")]
+        public IActionResult GivenReviews(User user)
         {
-            return Ok("succesfully created");
+            throw new NotImplementedException();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpGet("recieved-reviews")]
+        public IActionResult ReceivedReviews(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public IActionResult GiveReview(Review review) { 
+            throw new NotImplementedException();
+        }
+
+        [HttpPut]
+        public IActionResult UpdateReview(Review review) { 
+            throw new NotImplementedException(); 
+        }
+
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id) 
         {
-            return Ok("succesfully created");
+            throw new NotImplementedException();
         }
     }
 }

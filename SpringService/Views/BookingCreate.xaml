@@ -4,7 +4,7 @@
              x:Class="SpringService.Views.BookingCreate"
              Title="Book a service">
     <ScrollView>
-        <Grid Padding="10">
+        <Frame Padding="10">
             <StackLayout Spacing="10">
                 <Entry Placeholder="Service"/>
                 <Entry Placeholder="Amount"/>
@@ -13,7 +13,7 @@
                 <Entry Placeholder="Location"/>
                 <Button Text="Submit" />
             </StackLayout>
-        </Grid>
+        </Frame>
         
     </ScrollView>
 </ContentPage>

@@ -1,43 +1,53 @@
-﻿using SpringService.Api.Models;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore;
+using SpringService.Api.Data;
+using SpringService.Api.Models;
 using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Repository
 {
-    public class BookingRepository : IBookingRepository
+    public class BookingRepository(ApplicationDbContext context) : BaseRepository(context), IBookingRepository
     {
+        private new readonly ApplicationDbContext context = context;
+
         public bool BookingExists(int id)
         {
-            throw new NotImplementedException();
+            return context.Bookings.Any(b => b.Id == id);
         }
 
         public bool CreateBooking(Booking booking)
         {
-            throw new NotImplementedException();
+            context.Add(booking);
+            return Save();
         }
 
         public bool DeleteBooking(int id)
         {
-            throw new NotImplementedException();
+            var booking = context.Bookings.FirstOrDefault(b => b.Id == id);
+            if (BookingExists(id))
+            {
+                context.Remove(booking);
+                return Save();
+            }
+            return false; 
         }
 
-        public List<Booking> GetAllBookings()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Booking> GetAllBookings() => context.Bookings.ToList();
 
-        public Booking GetBooking(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Booking GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault();
 
-        public List<Booking> GetUserBooking(User user)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Booking> GetUserBooking(User user) => context.Bookings.Where(b => b.Id == user.Id).ToList();
 
         public bool UpdateBooking(Booking booking)
         {
-            throw new NotImplementedException();
+            context.Update(booking);
+            return Save();
         }
+
+        /*private bool Save()
+        {
+            int saved = context.SaveChanges();
+            return saved > 0;
+        }*/
     }
 }

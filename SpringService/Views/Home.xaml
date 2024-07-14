@@ -26,10 +26,10 @@
                                                                     AncestorType={x:Type viewmodel:HomeViewModel}}, 
                                                                     Path=CategoryDetailCommand}"/>
                                 </Frame.GestureRecognizers>
-                                <StackLayout Spacing="10">
+                                <StackLayout Spacing="10" Padding="5">
                                     <Image Aspect="AspectFill" Source="qauto"/>
                                     <StackLayout Grid.Column="1">
-                                        <Label Text="{Binding Name}" HorizontalOptions="Center" />
+                                        <Label Text="{Binding Name}" HorizontalOptions="Center" Padding="10, 0"/>
                                     </StackLayout>
                                 </StackLayout>
                             </Frame> 
@@ -67,7 +67,7 @@
             <!--#End CTA-->
 
             <!--#Reviews-->
-            <StackLayout Spacing="5">
+            <StackLayout Spacing="5" Padding="0,0,0,10">
                 <Label FontSize="15">Our Reviews</Label>
                 <CarouselView IndicatorView="indicatorView">
                     <CarouselView.ItemsSource>
@@ -110,11 +110,6 @@
                 <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center"/>
             </StackLayout>
             <!--#End Reviews-->
-            
-            <!--Spacer-->
-            <Border/>
-            <!--EndSpacer-->
-
         </StackLayout>
     </ScrollView>
     

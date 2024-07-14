@@ -1,38 +1,49 @@
-﻿using SpringService.Api.Models;
+﻿using SpringService.Api.Data;
+using SpringService.Api.Models;
 using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository(ApplicationDbContext context) : BaseRepository(context), IUserRepository
     {
+        private new readonly ApplicationDbContext context = context;
         public bool CreateUser(User user)
         {
-            throw new NotImplementedException();
+            context.Add(user);
+            return Save();
         }
 
         public bool DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            context.Remove(user);
+            return Save();
         }
 
         public User GetUser(string slug)
         {
-            throw new NotImplementedException();
+            return context.Users.Where(u  => u.Slug == slug).FirstOrDefault();
         }
 
-        public List<User> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            throw new NotImplementedException();
+            return context.Users.ToList();
         }
 
         public bool UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            context.Update(user);
+            return Save();
         }
 
         public bool UserExists(User user)
         {
-            throw new NotImplementedException();
+            return context.Users.Any(u => u.Id == user.Id);
+        }
+
+        private bool Save()
+        {
+            int saved = context.SaveChanges();
+            return saved > 0;
         }
     }
 }

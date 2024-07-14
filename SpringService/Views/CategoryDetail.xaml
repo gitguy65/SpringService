@@ -8,13 +8,19 @@
 
     <Grid RowDefinitions="*, 200" IgnoreSafeArea="True">
         <Image Source="qauto"/>
-        <StackLayout Grid.Row="1" Spacing="15" Padding="10" VerticalOptions="FillAndExpand">
-            <Label Text="{Binding Category.Description}"/>
-            <Button Text="Book this service" CommandParameter="{Binding .}" 
-                                             Command="{Binding Source={RelativeSource 
-                                                    AncestorType={x:Type viewmodel:CategoryViewModel}}, 
-                                                    Path=BookingDetailCommand}"/>
-        </StackLayout>
+        <Grid Grid.Row="1" RowSpacing="15" Padding="10" 
+                     VerticalOptions="FillAndExpand">
+            <ScrollView>
+                <Label Text="{Binding Category.Description}"/>
+            </ScrollView> 
+                <Button Text="Book this service"
+                        VerticalOptions="End"
+                        CommandParameter="{Binding .}" 
+                        Command="{Binding Source={RelativeSource 
+                                  AncestorType={x:Type viewmodel:CategoryViewModel}}, 
+                                  Path=BookingDetailCommand}"/> 
+            
+        </Grid>
     </Grid>
     
 </ContentPage>

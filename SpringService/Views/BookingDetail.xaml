@@ -5,7 +5,7 @@
              x:DataType="viewmodel:BookingDetailViewModel"
              Title="Booking Info">
     <ScrollView Padding="10">
-        <Frame CornerRadius="20" Background="Transparent">
+        <Frame CornerRadius="20">
             <VerticalStackLayout Spacing="15">
                 <Label Text="{Binding Booking.BookingDate, StringFormat='Order date: {0}'}"/>
                 <Label Text="{Binding Booking.StartDate, StringFormat='Start date: {0}'}"/>

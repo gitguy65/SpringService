@@ -1,10 +1,12 @@
-﻿using SpringService.Api.Models;
+﻿using SpringService.Api.Data;
+using SpringService.Api.Models;
 using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Repository
 {
-    public class HistoryRepository : IHistoryRepository
+    public class HistoryRepository(ApplicationDbContext context) : BaseRepository(context), IHistoryRepository
     {
+        private new readonly ApplicationDbContext context = context;
         public bool CreateHistory(History history)
         {
             throw new NotImplementedException();
@@ -15,12 +17,12 @@ namespace SpringService.Api.Repository
             throw new NotImplementedException();
         }
 
-        public List<History> GetAllHistories()
+        public IEnumerable<History> GetAllHistories()
         {
             throw new NotImplementedException();
         }
 
-        public List<History> GetHistories(User user)
+        public IEnumerable<History> GetHistories(User user)
         {
             throw new NotImplementedException();
         }

@@ -9,10 +9,12 @@ namespace SpringService.Api.Controllers
     [Route("api/booking")]
     [ApiController]
     public class BookingController(IBookingRepository bookingRepository, 
+                                   IUserRepository userRepository,
                                    ILogger<Booking> logger, 
                                    IMapper mapper) : Controller
     {
         private readonly IBookingRepository bookingRepository = bookingRepository;
+        private readonly IUserRepository userRepository = userRepository;
         private readonly ILogger<Booking> logger = logger;
         private readonly IMapper mapper = mapper;
 
@@ -32,13 +34,20 @@ namespace SpringService.Api.Controllers
             return Ok(Booking);
         }
 
-        [HttpGet("user")]
+
+        [HttpGet("user/{slug}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GeUserBookings(User user)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GeUserBookings(string slug)
         {
-            var Booking = mapper.Map<List<BookingDto>>(bookingRepository.GetUserBooking(user));
+            var user = userRepository.GetUser(slug);
+
+            if (!userRepository.UserExists(user))
+                return NotFound();
+
+            var Booking = mapper.Map<IEnumerable<BookingDto>>(bookingRepository.GetUserBooking(user));
 
             if (!ModelState.IsValid)
             {
@@ -47,11 +56,12 @@ namespace SpringService.Api.Controllers
             return Ok(Booking);
         }
 
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetBooking(int id)
         {
             if (!bookingRepository.BookingExists(id))
@@ -61,85 +71,64 @@ namespace SpringService.Api.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Booking not found");
             }
             return Ok(Booking);
         }
 
-        [HttpPost("user")]
+
+        [HttpPost("user/{slug}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateBooking([FromBody] BookingDto createBooking)
+        public IActionResult CreateBooking(string slug,[FromBody] BookingDto booking)
         {
-            if (createBooking == null)
+            if (booking == null)
                 return BadRequest(ModelState);
-            var Booking = bookingRepository.GetAllBookings()
-                .Where(c => c.Id == createBooking.Id)
-                .FirstOrDefault();
 
-            if (Booking != null)
+            var user = userRepository.GetUser(slug);
+
+            if (user is null)
             {
-                ModelState.AddModelError("", "Booking with chosen email already exists");
+                ModelState.AddModelError("", "no associated user");
                 return StatusCode(422, ModelState);
             }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var BookingMap = mapper.Map<Booking>(createBooking);
+            var bookingMap = mapper.Map<Booking>(booking);
+            bookingMap.User = user;
+            bookingMap.UserId = user.Id;
 
-            if (!bookingRepository.CreateBooking(BookingMap))
+            if (!bookingRepository.CreateBooking(bookingMap))
             {
                 ModelState.AddModelError("", "An internal error occured");
+                logger.LogError(message: ModelState.ToString());
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("succesfully created");
+            return StatusCode(201, "Succesfully added user's booking");
         }
 
-        [HttpDelete("user/{id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DeleteBookingPost(int booking)
-        {
-            if (booking == null)
-                return BadRequest();
 
-            if (!bookingRepository.BookingExists(booking))
-            {
-                return NotFound();
-            }
-            var BookingToDelete = bookingRepository.GetBooking(booking);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!bookingRepository.DeleteBooking(BookingToDelete.Id))
-            {
-                ModelState.AddModelError("", "An error occured while deleting Booking");
-            }
-
-            return NoContent();
-        }
-
-        [HttpPut("user")]
+        [HttpPut("user/{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult UpdateBooking(int BookingId, [FromBody] BookingDto updateBooking)
+        public IActionResult UpdateBooking(int id, [FromBody] BookingDto updateBooking)
         {
             if (updateBooking == null)
                 return BadRequest(ModelState);
 
-            if (BookingId != updateBooking.Id)
+            if (id != updateBooking.Id)
             {
                 ModelState.AddModelError("", "Id mismatch");
                 return BadRequest(ModelState);
             }
 
-            if (!bookingRepository.BookingExists(BookingId))
+            if (!bookingRepository.BookingExists(id))
                 return NotFound();
 
             if (!ModelState.IsValid)
@@ -149,10 +138,39 @@ namespace SpringService.Api.Controllers
             if (!bookingRepository.UpdateBooking(BookingMap))
             {
                 ModelState.AddModelError("", "Something went wrong while updating Booking");
+                logger.LogInformation(message: ModelState.ToString());
                 return StatusCode(500, ModelState);
             }
 
             return Ok("succesfully updated");
         }
+
+
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeleteBooking(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            if (!bookingRepository.BookingExists(id))
+            {
+                return NotFound();
+            }
+            var BookingToDelete = bookingRepository.GetBooking(id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!bookingRepository.DeleteBooking(BookingToDelete.Id))
+            {
+                ModelState.AddModelError("", "An error occured while deleting booking");
+            }
+
+            return NoContent();
+        }         
     }
 }

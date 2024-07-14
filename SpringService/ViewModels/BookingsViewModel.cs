@@ -34,7 +34,8 @@ namespace SpringService.ViewModels
         {
             await GetBookingsAsync();
         }*/    
-        /*public async Task GetBookingsAsync()
+        /* 
+        public async Task GetBookingsAsync()
         {
             if (IsBusy)
                 return;
