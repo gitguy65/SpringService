@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SpringService.Api.Data;
 using SpringService.Api.Repository;
 using SpringService.Api.Repository.IRepository;
@@ -12,6 +13,9 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
+    .WriteTo.File("logs/spring_api_logs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+builder.Host.UseSerilog();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

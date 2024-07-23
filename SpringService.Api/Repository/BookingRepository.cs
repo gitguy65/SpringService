@@ -10,10 +10,7 @@ namespace SpringService.Api.Repository
     {
         private new readonly ApplicationDbContext context = context;
 
-        public bool BookingExists(int id)
-        {
-            return context.Bookings.Any(b => b.Id == id);
-        }
+        public bool BookingExists(int id) => context.Bookings.Any(b => b.Id == id);
 
         public bool CreateBooking(Booking booking)
         {
@@ -32,22 +29,16 @@ namespace SpringService.Api.Repository
             return false; 
         }
 
-        public IEnumerable<Booking> GetAllBookings() => context.Bookings.ToList();
+        public IEnumerable<Booking> GetAllBookings() => [.. context.Bookings];
 
-        public Booking GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault();
+        public Booking GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault() ?? null;
 
-        public IEnumerable<Booking> GetUserBooking(User user) => context.Bookings.Where(b => b.Id == user.Id).ToList();
+        public IEnumerable<Booking> GetUserBooking(User user) => [.. context.Bookings.Where(b => b.Id == user.Id)];
 
         public bool UpdateBooking(Booking booking)
         {
             context.Update(booking);
             return Save();
         }
-
-        /*private bool Save()
-        {
-            int saved = context.SaveChanges();
-            return saved > 0;
-        }*/
     }
 }

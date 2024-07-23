@@ -12,15 +12,13 @@
                      VerticalOptions="FillAndExpand">
             <ScrollView>
                 <Label Text="{Binding Category.Description}"/>
-            </ScrollView> 
-                <Button Text="Book this service"
+            </ScrollView>
+            <Button Text="Book this service"
                         VerticalOptions="End"
                         CommandParameter="{Binding .}" 
                         Command="{Binding Source={RelativeSource 
                                   AncestorType={x:Type viewmodel:CategoryViewModel}}, 
-                                  Path=BookingDetailCommand}"/> 
-            
+                                  Path=BookingDetailCommand}"/>
         </Grid>
     </Grid>
-    
 </ContentPage>

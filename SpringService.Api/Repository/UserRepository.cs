@@ -19,15 +19,9 @@ namespace SpringService.Api.Repository
             return Save();
         }
 
-        public User GetUser(string slug)
-        {
-            return context.Users.Where(u  => u.Slug == slug).FirstOrDefault();
-        }
+        public User GetUser(string slug) => context.Users.Where(u  => u.Slug == slug).FirstOrDefault() ?? null;
 
-        public IEnumerable<User> GetUsers()
-        {
-            return context.Users.ToList();
-        }
+        public IEnumerable<User> GetUsers() => [.. context.Users];
 
         public bool UpdateUser(User user)
         {

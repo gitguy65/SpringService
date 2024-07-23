@@ -23,15 +23,9 @@ namespace SpringService.Api.Repository
             return Save();
         }
 
-        public IEnumerable<Category> FetchAll()
-        {
-            return context.Cateogries.ToList();
-        }
+        public IEnumerable<Category> FetchAll() => [.. context.Cateogries];
 
-        public Category GetCategory(int id)
-        {
-            return context.Cateogries.Where(c => c.Id == id).FirstOrDefault();
-        }
+        public Category GetCategory(int id) => context.Cateogries.Where(c => c.Id == id).FirstOrDefault() ?? null;
 
         public bool UpdateCategory(Category category)
         {

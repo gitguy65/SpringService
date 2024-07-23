@@ -11,7 +11,7 @@
     Title="SpringService">
 
     <TabBar>
-        <Tab Icon="bx_home">
+        <Tab Icon="bx_home"> 
             <ShellContent ContentTemplate="{DataTemplate views:Home}" />
         </Tab>
         <Tab Icon="bx_book_alt">
