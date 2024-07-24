@@ -23,7 +23,7 @@ namespace SpringService.Api.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public IActionResult GetAllUsers()
         {
-            var users = mapper.Map<IEnumerable<UserDto>>(userRepository.GetUsers());
+            var users = mapper.Map<IEnumerable<AppUserDto>>(userRepository.GetUsers());
             
             if (users.Count() < 0)
                 return BadRequest();
@@ -44,7 +44,7 @@ namespace SpringService.Api.Controllers
             if (findUser is null)
                 return NotFound();
 
-            var user = mapper.Map<UserDto>(userRepository.GetUser(Id));
+            var user = mapper.Map<AppUserDto>(userRepository.GetUser(Id));
             return Ok(user);
         }
 
@@ -54,7 +54,7 @@ namespace SpringService.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Register([FromBody] UserDto createUser)
+        public IActionResult Register([FromBody] AppUserDto createUser)
         {
             if (createUser == null)
                 return BadRequest(ModelState);
@@ -74,7 +74,7 @@ namespace SpringService.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var UserMap = mapper.Map<User>(createUser);
+            var UserMap = mapper.Map<AppUser>(createUser);
             UserMap.Balance = 0; 
             // run image validation and upload
             //hash the password
@@ -129,7 +129,7 @@ namespace SpringService.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult UpdateUser(string Id, UserDto user) 
+        public IActionResult UpdateUser(string Id, AppUserDto user) 
         {
             if (user is null)
                 return BadRequest(ModelState);
@@ -140,7 +140,7 @@ namespace SpringService.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userMap = mapper.Map<User>(user);
+            var userMap = mapper.Map<AppUser>(user);
 
             if (!userRepository.UserExists(userMap))
                 return NotFound();

@@ -5,7 +5,7 @@ namespace SpringService.Api.Repository.IRepository
     public interface IHistoryRepository
     {
         IEnumerable<History> GetAllHistories();
-        IEnumerable<History> GetHistories(User user);
+        IEnumerable<History> GetHistories(AppUser user);
         bool CreateHistory(History history);
         bool UpdateHistory(History history);
         bool DeleteHistory(int id);

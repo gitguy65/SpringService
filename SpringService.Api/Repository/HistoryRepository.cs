@@ -22,7 +22,7 @@ namespace SpringService.Api.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<History> GetHistories(User user)
+        public IEnumerable<History> GetHistories(AppUser user)
         {
             throw new NotImplementedException();
         }

@@ -7,29 +7,29 @@ namespace SpringService.Api.Repository
     public class UserRepository(ApplicationDbContext context) : BaseRepository(context), IUserRepository
     {
         private new readonly ApplicationDbContext context = context;
-        public bool CreateUser(User user)
+        public bool CreateUser(AppUser user)
         {
             context.Add(user);
             return Save();
         }
 
-        public bool DeleteUser(User user)
+        public bool DeleteUser(AppUser user)
         {
             context.Remove(user);
             return Save();
         }
 
-        public User? GetUser(string Id) => context.Users.Where(u => u.Id == Id).FirstOrDefault() ?? null;
+        public AppUser? GetUser(string Id) => context.AppUsers.Where(u => u.Id == Id).FirstOrDefault() ?? null;
 
-        public IEnumerable<User> GetUsers() => [.. context.Users];
+        public IEnumerable<AppUser> GetUsers() => [.. context.AppUsers];
 
-        public bool UpdateUser(User user)
+        public bool UpdateUser(AppUser user)
         {
             context.Update(user);
             return Save();
         }
 
-        public bool UserExists(User user)
+        public bool UserExists(AppUser user)
         {
             return context.Users.Any(u => u.Id == user.Id);
         }

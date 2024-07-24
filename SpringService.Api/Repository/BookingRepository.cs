@@ -33,7 +33,7 @@ namespace SpringService.Api.Repository
 
         public Booking GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault() ?? null;
 
-        public IEnumerable<Booking> GetUserBooking(User user) => [.. context.Bookings.Where(b => b.UserId == user.Id)];
+        public IEnumerable<Booking> GetUserBooking(AppUser user) => [.. context.Bookings.Where(b => b.UserId == user.Id)];
 
         public bool UpdateBooking(Booking booking)
         {

@@ -5,7 +5,7 @@ namespace SpringService.Api.Repository.IRepository
     public interface IBookingRepository
     {
         IEnumerable<Booking> GetAllBookings();
-        IEnumerable<Booking> GetUserBooking(User user);
+        IEnumerable<Booking> GetUserBooking(AppUser user);
         Booking GetBooking(int id);
         bool CreateBooking(Booking booking);
         bool UpdateBooking(Booking booking);

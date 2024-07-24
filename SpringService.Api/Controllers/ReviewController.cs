@@ -13,13 +13,13 @@ namespace SpringService.Api.Controllers
         }
 
         [HttpGet("user-given-reviews")]
-        public IActionResult GivenReviews(User user)
+        public IActionResult GivenReviews(AppUser user)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet("user-recieved-reviews")]
-        public IActionResult ReceivedReviews(User user)
+        public IActionResult ReceivedReviews(AppUser user)
         {
             throw new NotImplementedException();
         }

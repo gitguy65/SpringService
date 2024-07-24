@@ -4,11 +4,11 @@ namespace SpringService.Api.Repository.IRepository
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
-        User GetUser(string slug);
-        bool CreateUser(User user);
-        bool UpdateUser(User user);
-        bool DeleteUser(User user);
-        bool UserExists(User user);
+        IEnumerable<AppUser> GetUsers();
+        AppUser GetUser(string slug);
+        bool CreateUser(AppUser user);
+        bool UpdateUser(AppUser user);
+        bool DeleteUser(AppUser user);
+        bool UserExists(AppUser user);
     }
 }

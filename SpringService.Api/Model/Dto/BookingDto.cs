@@ -6,7 +6,7 @@ namespace SpringService.Api.Model.Dto
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

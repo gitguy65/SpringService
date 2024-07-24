@@ -5,7 +5,7 @@ namespace SpringService.Api.Model.Dto
     public class HistoryDto
     {
         public string UserID { get; set; }
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public string ServiceId { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; }

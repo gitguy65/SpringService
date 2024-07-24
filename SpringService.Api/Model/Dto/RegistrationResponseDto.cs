@@ -2,7 +2,7 @@
 {
     public class RegistrationResponseDto
     {
-        public UserDto User { get; set; }
+        public AppUserDto User { get; set; }
         public string Token { get; set; }
     }
 }

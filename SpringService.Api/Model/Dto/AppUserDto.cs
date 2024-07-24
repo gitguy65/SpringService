@@ -2,7 +2,7 @@
 
 namespace SpringService.Api.Model.Dto
 {
-    public class UserDto
+    public class AppUserDto
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

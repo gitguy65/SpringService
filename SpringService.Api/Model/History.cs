@@ -7,7 +7,7 @@ namespace SpringService.Api.Models
         [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public int ServiceId { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; } //might change this to char

@@ -10,7 +10,7 @@ namespace SpringService.Api.Util
         {
             CreateMap<Category, CategoryDto>();
             CreateMap<History, HistoryDto>();
-            CreateMap<User, UserDto>();
+            CreateMap<AppUser, AppUserDto>();
             CreateMap<Booking, BookingDto>();
         }
     }
