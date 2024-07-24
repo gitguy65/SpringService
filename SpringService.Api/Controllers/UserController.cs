@@ -6,7 +6,7 @@ using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Controllers
 {
-    [Route("api/user")]
+    [Route("api/v1/user")]
     [ApiController]
     public class UserController(IUserRepository userRepository,
                               ILogger<UserController> logger,
@@ -32,31 +32,29 @@ namespace SpringService.Api.Controllers
         }
 
 
-        [HttpGet("{slug}")]
+        [HttpGet("{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GetUser(string slug)
+        public IActionResult GetUser(string Id)
         {
-            var findUser = userRepository.GetUser(slug);
+            var findUser = userRepository.GetUser(Id);
 
-            /*if(!userRepository.UserExists(findUser))
-                return NotFound();*/
             if (findUser is null)
                 return NotFound();
 
-            var user = mapper.Map<UserDto>(userRepository.GetUser(slug));
+            var user = mapper.Map<UserDto>(userRepository.GetUser(Id));
             return Ok(user);
         }
 
 
-        [HttpPost]
+        [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Createuser([FromBody] UserDto createUser)
+        public IActionResult Register([FromBody] UserDto createUser)
         {
             if (createUser == null)
                 return BadRequest(ModelState);
@@ -77,8 +75,7 @@ namespace SpringService.Api.Controllers
                 return BadRequest(ModelState);
 
             var UserMap = mapper.Map<User>(createUser);
-            UserMap.Balance = 0;
-            UserMap.Slug = "";
+            UserMap.Balance = 0; 
             // run image validation and upload
             //hash the password
             UserMap.ReceivedReviews = null;
@@ -97,16 +94,47 @@ namespace SpringService.Api.Controllers
         }
 
 
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Login(string email, string password)
+        {
+            if (email is null || password is null)
+                return BadRequest(ModelState);
+
+            //check if valid email
+
+            var checkUser = userRepository.GetUsers()
+                .Where(c => c.Email == email)
+                .FirstOrDefault();
+
+            if (checkUser != null)
+            {
+                ModelState.AddModelError("", "User with chosen email already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+
+            return StatusCode(201, "Succesfully created user");
+        }
+
+
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult UpdateUser(string slug, UserDto user) 
+        public IActionResult UpdateUser(string Id, UserDto user) 
         {
             if (user is null)
                 return BadRequest(ModelState);
 
-            if (slug != user.Slug)
+            if (Id != user.Id)
             {
                 ModelState.AddModelError("", "Id mismatch");
                 return BadRequest(ModelState);

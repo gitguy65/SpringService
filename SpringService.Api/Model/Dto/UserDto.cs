@@ -4,10 +4,10 @@ namespace SpringService.Api.Model.Dto
 {
     public class UserDto
     {
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string UserName { get; set; }
-        public string LastName { get; set; }
-        public string Slug { get; set; }
+        public string LastName { get; set; } 
         public double Balance { get; set; }
         public string Email { get; set; }
         public int Mobile { get; set; }

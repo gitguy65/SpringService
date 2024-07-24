@@ -19,7 +19,7 @@ namespace SpringService.Api.Repository
             return Save();
         }
 
-        public User GetUser(string slug) => context.Users.Where(u  => u.Slug == slug).FirstOrDefault() ?? null;
+        public User? GetUser(string Id) => context.Users.Where(u => u.Id == Id).FirstOrDefault() ?? null;
 
         public IEnumerable<User> GetUsers() => [.. context.Users];
 

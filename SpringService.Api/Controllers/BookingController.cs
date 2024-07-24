@@ -6,7 +6,7 @@ using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Controllers
 {
-    [Route("api/booking")]
+    [Route("api/v1/booking")]
     [ApiController]
     public class BookingController(IBookingRepository bookingRepository, 
                                    IUserRepository userRepository,
@@ -19,7 +19,7 @@ namespace SpringService.Api.Controllers
         private readonly IMapper mapper = mapper;
 
 
-        [HttpGet]
+        [HttpGet("fetch-all-bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -35,14 +35,14 @@ namespace SpringService.Api.Controllers
         }
 
 
-        [HttpGet("user/{slug}")]
+        [HttpGet("fetch-all-user-bookings/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GeUserBookings(string slug)
+        public IActionResult GeUserBookings(string Id)
         {
-            var user = userRepository.GetUser(slug);
+            var user = userRepository.GetUser(Id);
 
             if (!userRepository.UserExists(user))
                 return NotFound();
@@ -57,7 +57,7 @@ namespace SpringService.Api.Controllers
         }
 
 
-        [HttpGet("{id:int}")]
+        [HttpGet("fetch-booking/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -77,17 +77,17 @@ namespace SpringService.Api.Controllers
         }
 
 
-        [HttpPost("user/{slug}")]
+        [HttpPost("create-booking/{Id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateBooking(string slug,[FromBody] BookingDto booking)
+        public IActionResult CreateBooking(string Id,[FromBody] BookingDto booking)
         {
             if (booking == null)
                 return BadRequest(ModelState);
 
-            var user = userRepository.GetUser(slug);
+            var user = userRepository.GetUser(Id);
 
             if (user is null)
             {
@@ -113,21 +113,24 @@ namespace SpringService.Api.Controllers
         }
 
 
-        [HttpPut("user/{id:int}")]
+        [HttpPut("update-user-booking/{Id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult UpdateBooking(int id, [FromBody] BookingDto updateBooking)
+        public IActionResult UpdateBooking(string Id, [FromBody] BookingDto updateBooking)
         {
             if (updateBooking == null)
                 return BadRequest(ModelState);
 
-            if (id != updateBooking.Id)
+            if (Id != updateBooking.User.Id)
             {
                 ModelState.AddModelError("", "Id mismatch");
                 return BadRequest(ModelState);
             }
 
+            // get the booking Id
+            int id = 0;
+            
             if (!bookingRepository.BookingExists(id))
                 return NotFound();
 

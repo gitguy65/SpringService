@@ -7,7 +7,7 @@ using SpringService.Api.Repository.IRepository;
 
 namespace SpringService.Api.Controllers
 {
-    [Route("api/category/")]
+    [Route("api/v1/category")]
     [ApiController]
     public class CategoryController(ICategoryRepository categoryRepository,
                                     ILogger<CategoryController> logger,
