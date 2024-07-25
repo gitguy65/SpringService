@@ -12,7 +12,7 @@ using SpringService.Api.Data;
 namespace SpringService.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240724170245_InitialCreate")]
+    [Migration("20240725152445_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -146,7 +146,7 @@ namespace SpringService.Api.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+                    b.HasDiscriminator().HasValue("IdentityUser");
 
                     b.UseTphMappingStrategy();
                 });
