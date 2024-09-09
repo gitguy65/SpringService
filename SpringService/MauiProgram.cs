@@ -26,17 +26,17 @@ namespace SpringService
             builder.Services.AddSingleton<IMap>(Map.Default);
 
             // API Dependency Services
-            builder.Services.AddSingleton<ReviewService>();
-            builder.Services.AddSingleton<CategoryService>();
-            builder.Services.AddSingleton<BookingService>();
-            builder.Services.AddSingleton<HistoryService>();
-            builder.Services.AddSingleton<ProfileService>();
-            builder.Services.AddSingleton<RegistrationService>();
-            builder.Services.AddSingleton<LoginService>();
+            builder.Services.AddTransient<ReviewService>();
+            builder.Services.AddTransient<CategoryService>();
+            builder.Services.AddTransient<BookingService>();
+            builder.Services.AddTransient<HistoryService>();
+            builder.Services.AddTransient<ProfileService>();
+            builder.Services.AddTransient<RegistrationService>();
+            builder.Services.AddTransient<LoginService>();
 
-            builder.Services.AddSingleton<IBookingService, BookingServiceAsync>();
-            builder.Services.AddSingleton<ICategoryService, CategoryServiceAsync>();
-            builder.Services.AddSingleton<IReviewService, ReviewService>();
+            builder.Services.AddTransient<IBookingService, BookingServiceAsync>();
+            builder.Services.AddTransient<ICategoryService, CategoryServiceAsync>();
+            builder.Services.AddTransient<IReviewService, ReviewService>();
 
             // Pages
             builder.Services.AddTransient<HomeViewModel>();
@@ -48,17 +48,17 @@ namespace SpringService
             builder.Services.AddTransient<CategoriesViewModel>();
             builder.Services.AddTransient<Categories>();
 
-            builder.Services.AddSingleton<BookingsViewModel>();
-            builder.Services.AddSingleton<Bookings>();
+            builder.Services.AddTransient<BookingsViewModel>();
+            builder.Services.AddTransient<Bookings>();
 
             builder.Services.AddTransient<BookingDetailViewModel>();
             builder.Services.AddTransient<BookingDetail>();
 
-            builder.Services.AddSingleton<BookingCreateViewModel>();
-            builder.Services.AddSingleton<BookingCreate>();
+            builder.Services.AddTransient<BookingCreateViewModel>();
+            builder.Services.AddTransient<BookingCreate>();
                                
-            builder.Services.AddSingleton<HistoryViewModel>();
-            builder.Services.AddSingleton<History>();
+            builder.Services.AddTransient<HistoryViewModel>();
+            builder.Services.AddTransient<History>();
 
             builder.Services.AddTransient<HistoryDetailViewModel>();
             builder.Services.AddTransient<HistoryDetail>();

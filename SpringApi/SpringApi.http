@@ -1,0 +1,25 @@
+@SpringApi_HostAddress = http://localhost:5000
+
+GET http://localhost:5000/todos?q=Shopping&done=false&skip=5&take=5
+Accept: application/json
+
+###
+GET http://localhost:5000/users/master
+Accept: application/json
+
+###
+GET http://localhost:5000/bookings/master
+Accept: application/json
+
+###
+GET http://localhost:5000/histories/master
+Accept: application/json
+
+###
+GET http://localhost:5000/payments/master
+Accept: application/json
+
+###
+POST http://localhost:5000/seed_database
+
+GET http://localhost:5000/todos?q=Shopping&done=false&skip=5&take=5

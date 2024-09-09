@@ -1,0 +1,5 @@
+{
+    "csharp.suppressHiddenDiagnostics": true,
+    "omnisharp.useModernNet": true,
+    "editor.formatOnSave": true
+}
