@@ -5,8 +5,6 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpringService", "SpringService\SpringService.csproj", "{A68EA7C9-D249-4A35-8337-318BB1D4226D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpringService.Api", "SpringService.Api\SpringService.Api.csproj", "{C298A650-6593-4258-89CE-C036ACE2B226}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpringApi", "SpringApi\SpringApi.csproj", "{94DF5E69-66C5-4841-AB0D-BBC92AC33B16}"
 EndProject
 Global

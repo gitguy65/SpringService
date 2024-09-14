@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SpringService.Api.Migrations
+namespace SpringApi.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -31,17 +31,23 @@ namespace SpringService.Api.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Balance = table.Column<double>(type: "float", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Qualification = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: true),
                     Social = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSubscribedToNewsletter = table.Column<bool>(type: "bit", nullable: true),
+                    RecieveNotifications = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -63,20 +69,20 @@ namespace SpringService.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cateogries",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cateogries", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,17 +200,19 @@ namespace SpringService.Api.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    PaymentType = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     Charge = table.Column<double>(type: "float", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     IsAccepted = table.Column<bool>(type: "bit", nullable: false),
                     IsPaymentConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentProof = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsJobCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsJobCanceled = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,6 +252,32 @@ namespace SpringService.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ServiceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Charge = table.Column<double>(type: "float", nullable: false),
+                    Commission = table.Column<double>(type: "float", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -271,6 +305,49 @@ namespace SpringService.Api.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Schedules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserProfileId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    WeekName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Schedules_AspNetUsers_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserProfileId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_AspNetUsers_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -323,6 +400,11 @@ namespace SpringService.Api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_UserId",
+                table: "Payments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ServiceProviderId",
                 table: "Reviews",
                 column: "ServiceProviderId");
@@ -331,6 +413,16 @@ namespace SpringService.Api.Migrations
                 name: "IX_Reviews_ServiceUserId",
                 table: "Reviews",
                 column: "ServiceUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedules_UserProfileId",
+                table: "Schedules",
+                column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_UserProfileId",
+                table: "Services",
+                column: "UserProfileId");
         }
 
         /// <inheritdoc />
@@ -355,13 +447,22 @@ namespace SpringService.Api.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Cateogries");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Histories");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "Schedules");
+
+            migrationBuilder.DropTable(
+                name: "Services");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

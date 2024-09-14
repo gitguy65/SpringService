@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/SpringService.Api.csproj"
+                "${workspaceFolder}/SpringApi/SpringApi.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

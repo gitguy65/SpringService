@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SpringService.Api.Data;
+using SpringApi.Data;
 
 #nullable disable
 
-namespace SpringService.Api.Migrations
+namespace SpringApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace SpringService.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -229,7 +229,7 @@ namespace SpringService.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.Booking", b =>
+            modelBuilder.Entity("SpringApi.Model.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,13 +246,23 @@ namespace SpringService.Api.Migrations
                     b.Property<double>("Charge")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsJobCanceled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsJobCompleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPaymentConfirmed")
@@ -268,13 +278,8 @@ namespace SpringService.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PaymentProof")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -290,7 +295,7 @@ namespace SpringService.Api.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.Category", b =>
+            modelBuilder.Entity("SpringApi.Model.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -298,11 +303,11 @@ namespace SpringService.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CategoryImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -319,10 +324,10 @@ namespace SpringService.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cateogries");
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.History", b =>
+            modelBuilder.Entity("SpringApi.Model.History", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -365,7 +370,50 @@ namespace SpringService.Api.Migrations
                     b.ToTable("Histories");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.Review", b =>
+            modelBuilder.Entity("SpringApi.Model.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Charge")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Commission")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -404,7 +452,68 @@ namespace SpringService.Api.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.AppUser", b =>
+            modelBuilder.Entity("SpringApi.Model.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserProfileId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WeekName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserProfileId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.UserProfile", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -415,22 +524,31 @@ namespace SpringService.Api.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("float");
 
+                    b.Property<string>("ConfirmPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Designation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Details")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Experience")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSubscribedToNewsletter")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
@@ -439,14 +557,30 @@ namespace SpringService.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Qualification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("RecieveNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Social")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("AppUser");
+                    b.HasDiscriminator().HasValue("UserProfile");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -500,37 +634,48 @@ namespace SpringService.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.Booking", b =>
+            modelBuilder.Entity("SpringApi.Model.Booking", b =>
                 {
-                    b.HasOne("SpringService.Api.Models.AppUser", "User")
+                    b.HasOne("SpringApi.Model.UserProfile", "UserProfile")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.History", b =>
+            modelBuilder.Entity("SpringApi.Model.History", b =>
                 {
-                    b.HasOne("SpringService.Api.Models.AppUser", "User")
+                    b.HasOne("SpringApi.Model.UserProfile", "UserProfile")
                         .WithMany("Histories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.Review", b =>
+            modelBuilder.Entity("SpringApi.Model.Payment", b =>
                 {
-                    b.HasOne("SpringService.Api.Models.AppUser", "ServiceProvider")
+                    b.HasOne("SpringApi.Model.UserProfile", "UserProfile")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.Review", b =>
+                {
+                    b.HasOne("SpringApi.Model.UserProfile", "ServiceProvider")
                         .WithMany("ReceivedReviews")
                         .HasForeignKey("ServiceProviderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SpringService.Api.Models.AppUser", "ServiceUser")
+                    b.HasOne("SpringApi.Model.UserProfile", "ServiceUser")
                         .WithMany("GivenReviews")
                         .HasForeignKey("ServiceUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -541,7 +686,25 @@ namespace SpringService.Api.Migrations
                     b.Navigation("ServiceUser");
                 });
 
-            modelBuilder.Entity("SpringService.Api.Models.AppUser", b =>
+            modelBuilder.Entity("SpringApi.Model.Schedule", b =>
+                {
+                    b.HasOne("SpringApi.Model.UserProfile", "UserProfile")
+                        .WithMany()
+                        .HasForeignKey("UserProfileId");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.Service", b =>
+                {
+                    b.HasOne("SpringApi.Model.UserProfile", "UserProfile")
+                        .WithMany("Services")
+                        .HasForeignKey("UserProfileId");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("SpringApi.Model.UserProfile", b =>
                 {
                     b.Navigation("Bookings");
 
@@ -549,7 +712,11 @@ namespace SpringService.Api.Migrations
 
                     b.Navigation("Histories");
 
+                    b.Navigation("Payments");
+
                     b.Navigation("ReceivedReviews");
+
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

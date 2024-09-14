@@ -19,17 +19,24 @@ namespace SpringApi.Repository
         public bool DeleteBooking(int id)
         {
             var booking = context.Bookings.FirstOrDefault(b => b.Id == id);
-            if (BookingExists(id))
+            // if (BookingExists(id))
+            // {
+            //     context.Remove(booking);
+            //     return Save();
+            // }
+            // return false; 
+            if (booking == null)
             {
-                context.Remove(booking);
-                return Save();
+                return false; // Booking doesn't exist, so return false
             }
-            return false; 
+            
+            context.Remove(booking);
+            return Save();
         }
 
         public IEnumerable<Booking> GetAllBookings() => [.. context.Bookings];
 
-        public Booking GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault() ?? null;
+        public Booking? GetBooking(int id) => context.Bookings.Where(b => b.Id == id).FirstOrDefault() ?? null;
 
         public IEnumerable<Booking> GetUserBooking(UserProfile user) => [.. context.Bookings.Where(b => b.UserId == user.Id)];
 

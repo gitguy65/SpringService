@@ -40,7 +40,8 @@ namespace SpringApi.Util
                         .RuleFor(u => u.Slug, f => f.Lorem.Slug())
                         .RuleFor(u => u.FirstName, f => f.Person.FirstName)
                         .RuleFor(u => u.LastName, f => f.Name.LastName())
-                        .RuleFor(u => u.ProfilePicture, f => null)
+                        // .RuleFor(u => u.ProfilePicture, f => null) 
+                        .RuleFor(c => c.ProfilePicture, f => new FormFile(Stream.Null, 0, 0, "ProfilePicture", "empty.png")) 
                         .RuleFor(x => x.Password, f => GeneratePassword()) 
                         .RuleFor(x => x.ConfirmPassword, (f, u) => u.Password)
                         .RuleFor(u => u.Balance, f => f.Random.Double(0, 10000))
@@ -86,14 +87,16 @@ namespace SpringApi.Util
                         .RuleFor(c => c.Id, f => f.IndexFaker + 1)
                         .RuleFor(c => c.Name, f => f.Commerce.Department())
                         .RuleFor(c => c.Slug, f => f.Lorem.Slug()) 
-                        .RuleFor(c => c.Image, f => null)
+                        // .RuleFor(c => c.CategoryImage, f => null) 
+                        .RuleFor(c => c.CategoryImage, f => new FormFile(Stream.Null, 0, 0, "CategoryImage", "empty.png"))
+                        .RuleFor(c => c.CategoryImageUrl, f => f.Image.PicsumUrl())
                         .RuleFor(c => c.Description, f => f.Lorem.Paragraph())
                         .RuleFor(c => c.Status, f => f.Random.Bool())
                         .Generate(10);
 
                     var reviews = new Faker<Review>()
                         .RuleFor(r => r.Id, f => f.IndexFaker + 1)
-                        .RuleFor(r => r.ServiceCategory, f => f.PickRandom(categories).Name)
+                        .RuleFor(r => r.ServiceCategory, (f, r) => f.PickRandom(categories).Name) 
                         .RuleFor(r => r.ServiceUser, f => f.PickRandom(users))
                         .RuleFor(r => r.ServiceUserId, (f, r) => r.ServiceUser.Id)
                         .RuleFor(r => r.ServiceProvider, f => f.PickRandom(users))
@@ -167,11 +170,11 @@ namespace SpringApi.Util
             });
         }
 
-        private static async Task SeedDatabase(ApplicationDbContext db)
-        {
-            // Add your seeding logic here
-            // For example: await db.SeedDataAsync();
-        }
+        // private static async Task SeedDatabase(ApplicationDbContext db)
+        // {
+        //     // Add your seeding logic here
+        //     // For example: await db.SeedDataAsync();
+        // }
 
 
         private static string GeneratePassword()

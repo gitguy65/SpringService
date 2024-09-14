@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpringApi.Model
 {
@@ -7,7 +8,9 @@ namespace SpringApi.Model
         public string Slug { get; set; } ="";
         public string FirstName { get; set; } ="";
         public string LastName { get; set; } ="";
-        public IFormFile? ProfilePicture { get; set; }
+        [NotMapped]
+        public IFormFile ProfilePicture { get; set; }
+        public string ProfilePictureUrl { get; set; } ="";
         public string Password { get; set; } ="";
         public string ConfirmPassword { get; set; } ="";
         public double Balance { get; set; }

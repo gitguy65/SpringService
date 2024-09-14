@@ -19,6 +19,9 @@ builder.Services.AddScoped<IValidator<Schedule>, ScheduleValidator>();
 builder.Services.AddScoped<IValidator<Service>, ServiceValidator>();
 builder.Services.AddScoped<IValidator<Payment>, PaymentValidator>();
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddEndpointsApiExplorer(); 
 
 var app = builder.Build(); 
@@ -64,15 +67,35 @@ app.MapGet("/user/{id}", (string id) =>
     // 
 });
 
-app.MapPost("/create-user", (UserProfile userProfile, IValidator<UserProfile> validator) =>
+app.MapPost("/create-user", async (UserProfile userProfile, IValidator<UserProfile> validator, ApplicationDbContext dbContext) =>
 {
     var validationResult = validator.Validate(userProfile);
     if (!validationResult.IsValid)
         return Results.ValidationProblem(validationResult.ToDictionary());
 
-    // add booking
+    string profilePictureUrl = null;
+    if (userProfile.ProfilePicture != null)
+    {
+        var uploadResult = await ImageUpload.UploadAsync(userProfile.ProfilePicture);
+        if (uploadResult is string errorMessage)
+            return Results.BadRequest(errorMessage);
+        
+        profilePictureUrl = uploadResult;
+    }
+    
+    userProfile.ProfilePictureUrl = profilePictureUrl;
+    try
+    {
+        dbContext.UserProfiles.Add(userProfile);
+        await dbContext.SaveChangesAsync();
 
-    return Results.Ok();
+        return Results.Ok("User created successfully");
+    }
+    catch (Exception ex)
+    {
+        // Log the exception details if necessary (using a logging framework)
+        return Results.Problem("An error occurred while creating the user profile.", statusCode: 500);
+    }
 });
 
 app.MapPut("/update-user/{id}", (string UserSlug) =>
