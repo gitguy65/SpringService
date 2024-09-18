@@ -190,21 +190,6 @@ namespace SpringService.Api.Util
         //     // Add your seeding logic here
         //     // For example: await db.SeedDataAsync();
         // }
-
-
-        // private static string GeneratePassword()
-        // {
-        //     var faker = new Faker();
-        //     int upperCaseCount = faker.Random.Int(1, 2); 
-        //     string upperCase = new string(Enumerable.Range(0, upperCaseCount).Select(_ => faker.Random.AlphaNumeric(1).ToUpper()[0]).ToArray()); 
-        //     string lowerCase = faker.Random.AlphaNumeric(1).ToLower(); 
-        //     string digit = faker.Random.Number(0, 9).ToString(); 
-        //     string specialChar = faker.Random.String2(1, "!@#$%^&*()"); 
-        //     string remainingChars = faker.Random.AlphaNumeric(8 - upperCase.Length - 3); 
-        // 
-        //     string password = upperCase + lowerCase + digit + specialChar + remainingChars;
-        //     return new string(password.OrderBy(c => Guid.NewGuid()).ToArray()); 
-        // }
     }
 }
 
